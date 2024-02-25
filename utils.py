@@ -13,17 +13,16 @@ from datasets import load_dataset
 def format(img, size=(28, 28)):
     img = Image.fromarray(img).convert('L').resize(size)
 
-    transform = v2.Compose([v2.ToImageTensor(), v2.ConvertImageDtype(), v2.functional.invert])
+    transform = v2.Compose([v2.ToImageTensor(), v2.ConvertDtype(), v2.functional.invert])
     img_tensor = transform(img)  
     return img_tensor
 
-def predict(img, model_path="models/mlp.pth"):
+def predict(img, model_selected):
+    # model_selected="mlp_baseline.pth"
+    model_path = f"models/{model_selected}"
+    print("Using", model_path)
     model = torch.load(model_path)
-    model.eval()
 
     img = format(img)
 
-    # return int(torch.argmax(model(img)))
-
-    return int(torch.argmax(model(img)))
-    # return img.numpy()
+    return int(torch.argmax(model(img.unsqueeze(0))))
