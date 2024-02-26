@@ -8,7 +8,6 @@ from torch import nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from torchvision.transforms import v2
-from datasets import load_dataset
 
 def format(img, size=(28, 28)):
     img = Image.fromarray(img).convert('L').resize(size)
