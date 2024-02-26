@@ -64,6 +64,11 @@ def main():
                     #     st.success("Image saved successfully!")
                 else:
                     st.write("lol")
+    
+    show_description = st.checkbox("Show model descriptions")
+    if show_description:
+        with open("README.md", "r") as file:
+            st.markdown(file.read().split("## Models:")[1])
 
 if __name__ == "__main__":
     main()
