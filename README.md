@@ -2,7 +2,7 @@
 ![demo](images/demo.png)
 
 Simple project to do exactly what the title says. Made with PyTorch and Streamlit. 
-Try it out here: ![https://digit-recognizer-bbb.streamlit.app/](https://digit-recognizer-bbb.streamlit.app/)
+Try it out here: [https://digit-recognizer-bbb.streamlit.app/](https://digit-recognizer-bbb.streamlit.app/)
 
 ## Models:
 - mlp_baseline: Basic MLP trained on MNIST dataset with 91.6% test accuracy. However, this model failed miserably when trying to predict my own handwriting. I ensured no data leakage during training, so the problem is probably that the MNIST dataset is too clean and different from real-life handwriting.
