@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 from PIL import Image
 
@@ -6,8 +7,11 @@ import torch
 import torch.optim as optim
 from torch import nn
 import torch.nn.functional as F
+import torchvision.models
 from torch.utils.data import DataLoader
 from torchvision.transforms import v2
+
+import joblib
 
 def format(img, size=(28, 28)):
     img = Image.fromarray(img).convert('L').resize(size)
@@ -18,13 +22,24 @@ def format(img, size=(28, 28)):
 
 def predict(img, model_selected):
     model_path = f"models/{model_selected}"
-    print("Using", model_path)
-    model = torch.load(model_path)
-    model.eval()
-
     img = format(img)
 
-    return int(torch.argmax(model(img.unsqueeze(0))))
+    if model_path.endswith('.pth'):
+        model = torch.load(model_path)
+        model.eval()
+
+        # Repeat to 3 channels for pre-trained models
+        if "finetune" in model_path:
+            img = img.repeat(3, 1, 1)
+
+        return int(torch.argmax(model(img.unsqueeze(0))))
+    else:
+        model = joblib.load(model_path)
+        flattened_data = img.reshape(1, -1)
+        df = pd.DataFrame(flattened_data, columns=[f'pixel_{i}' for i in range(flattened_data.shape[1])])
+
+        return model.predict(df)[0]
+
 
 class CNN(nn.Module):
     def __init__(self):
@@ -66,3 +81,13 @@ class CNN(nn.Module):
         x = self.conv(x)
         x = self.linear(x)
         return x
+    
+class ResNet(nn.Module):
+    def __init__(self):
+        super(ResNet, self).__init__()
+        self.model = torchvision.models.resnet18(pretrained=True)
+        self.model.fc = nn.Linear(self.model.fc.in_features, 10)
+        torch.nn.init.xavier_uniform_(self.model.fc.weight)
+    
+    def forward(self, x):
+        return self.model(x)
