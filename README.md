@@ -15,4 +15,4 @@ Fun fact: the dataset is small but I trained all models on my laptop CPU so this
 
 - `xgb_baseline`: Lightly tuned XGBoost model trained on flattened MNIST images, 97.6% test accuracy. As expected, this model overfits and performs poorly, which is expected since tree-based models are not the best for image data.
 
-- `resnet18_finetune`: Fine-tuned ResNet18 model on MNIST dataset with data augmentation, giving 98.5% test accuracy. This model performed the best on my own drawings, being pre-trained on real-life images and having a more complex convolution-based architecture.
+- `resnet18_finetune`: Fine-tuned ResNet18 model on MNIST dataset with data augmentation, giving 99.0% test accuracy. This model performed the best on my own drawings, being pre-trained on real-life images and having a more complex convolution-based architecture.
